@@ -3,7 +3,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://34.71.160.186:5000";
+    private static final String BASE_URL = "http://34.41.128.207:5000";
     private static Retrofit retrofit;
 
     public static Retrofit getRetrofit() {
