@@ -11,15 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/title_home">
+
         <ImageView
             android:id="@+id/navigation_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_settings_24"
             android:layout_gravity="end|center_vertical"
+            android:contentDescription="Navigation Icon"
             android:paddingEnd="16dp"
-            android:contentDescription="Navigation Icon" />
+            android:src="@drawable/baseline_settings_24" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Bottom Navigation View at the bottom -->
@@ -29,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="@color/white"
+        android:background="@color/bottomBar"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

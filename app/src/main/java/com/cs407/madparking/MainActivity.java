@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs407.madparking.ui.home.HomeFragment;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
     private ImageView navigationIconImageView;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Initialize the Toolbar after setting the content view
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         navigationIconImageView = findViewById(R.id.navigation_icon);
-
         // Initialize the NavController
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
@@ -58,12 +59,16 @@ public class MainActivity extends AppCompatActivity {
     private void updateNavigationIcon(int destinationId) {
         if (destinationId == R.id.navigation_home) {
             navigationIconImageView.setImageResource(R.drawable.baseline_settings_24);
+            toolbar.setTitle("Home Screen");
         } else if (destinationId == R.id.navigation_map) {
             navigationIconImageView.setImageResource(R.drawable.baseline_settings_24);
+            toolbar.setTitle("Map");
         } else if (destinationId == R.id.navigation_statistics) {
             navigationIconImageView.setImageResource(R.drawable.baseline_calendar_24);
+            toolbar.setTitle("Statistics");
         } else if (destinationId == R.id.navigation_settings) {
             navigationIconImageView.setImageDrawable(null);
+            toolbar.setTitle("General Settings");
         }
     }
 

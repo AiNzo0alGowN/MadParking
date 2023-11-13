@@ -8,6 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="night_1">#2B2727</color>
-    <color name="night_2">#4C4848</color>
-    <color name="bottomBar">#FFFFFFFF</color>
+    <color name="night_2">#E10A0A</color>
+    <color name="bottomBar">#FF000000</color>
 </resources>

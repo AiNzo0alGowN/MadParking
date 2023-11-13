@@ -4,35 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_settings_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/donation_box"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="General Settings"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/donation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Donation"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ev_support_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_settings_title"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/donation_box">
 
         <TextView
             android:id="@+id/text_ev_support"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Electric Vehicle Support" />
+            android:text="Electric Vehicle Support"
+            android:textStyle="bold" />
 
         <Switch
             android:id="@+id/switch_ev_support"
@@ -47,23 +55,55 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
+        android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/ev_support_box"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ev_support_box">
 
         <TextView
             android:id="@+id/text_dark_mode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dark Mode" />
+            android:text="Dark Mode"
+            android:textStyle="bold" />
 
         <Switch
             android:id="@+id/switch_dark_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <!-- New box for address input -->
+    <LinearLayout
+        android:id="@+id/address_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dark_mode_box">
+
+
+        <TextView
+            android:id="@+id/text_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Recommonded Address"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edittext_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter address" />
 
     </LinearLayout>
 
