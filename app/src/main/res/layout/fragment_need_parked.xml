@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".statics.NeedParkedFragment">
+    tools:context=".ui.dashboard.statis.NeedParkedFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -48,7 +48,6 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <!-- Text View "Do You Want Us to Help You Count?" -->
         <TextView
             android:id="@+id/textView_prompt"
             android:layout_width="wrap_content"
@@ -56,8 +55,8 @@
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:gravity="center_vertical"
+            android:text="Do You Want Us to Help You Count?"
             android:paddingLeft="20dp"
-            android:text="Do You Want Us to STOP Your Count?"
             android:textSize="18sp" />
 
         <FrameLayout
@@ -66,24 +65,14 @@
             android:layout_toRightOf="@+id/textView_prompt">
 
             <Button
+                android:id="@+id/need_parked_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/red"
                 android:minWidth="60dp"
-                android:minHeight="15dp"
                 android:padding="2dp"
+                android:backgroundTint="@color/green"
+                android:layout_gravity="center"
                 android:text="OK" />
         </FrameLayout>
-
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/park_price"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text="$0.00"
-        android:textSize="30dp" />
-
 </LinearLayout>

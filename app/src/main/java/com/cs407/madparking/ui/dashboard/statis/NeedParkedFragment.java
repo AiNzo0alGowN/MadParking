@@ -1,14 +1,21 @@
-package com.cs407.myapplication.statics;
+package com.cs407.madparking.ui.dashboard.statis;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.cs407.myapplication.R;
+import com.cs407.madparking.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +53,19 @@ public class NeedParkedFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button confirmButton = view.findViewById(R.id.need_parked_btn);
+        confirmButton.setOnClickListener(v -> {
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.parked_status_container, new OnParkedFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     @Override
