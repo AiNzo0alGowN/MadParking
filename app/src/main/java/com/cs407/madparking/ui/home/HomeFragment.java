@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.cs407.madparking.databinding.FragmentHomeBinding;
 
+import java.util.Map;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -26,6 +28,7 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.titleHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
@@ -34,4 +37,6 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }

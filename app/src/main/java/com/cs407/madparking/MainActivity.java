@@ -1,33 +1,41 @@
 package com.cs407.madparking;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cs407.madparking.api.GetParkingLotsResp;
+import com.cs407.madparking.api.data.GarageData;
 import com.cs407.madparking.databinding.ActivityMainBinding;
+import com.cs407.madparking.ui.dashboard.StatisticsViewModel;
+import com.cs407.madparking.ui.home.HomeViewModel;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private NavController navController;
     private ImageView navigationIconImageView;
-
-    private ImageView titleIconImageView;
-
-    private TextView toolbarTitle;
-
-    static int lastActiveFragment = R.id.nav_host_fragment_activity_main;
+    private Toolbar toolbar;
+    private HomeViewModel homeViewModel;
+    private ParkingLotRepository parkingLotRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +45,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Initialize the Toolbar after setting the content view
-        toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbar = findViewById(R.id.toolbar);
 
-        setSupportActionBar(findViewById(R.id.toolbar));
+        setSupportActionBar(toolbar);
 
-        titleIconImageView = findViewById(R.id.toolbar_image_left);
         navigationIconImageView = findViewById(R.id.navigation_icon);
         // Initialize the NavController
-        navController = Navigation.findNavController(this, lastActiveFragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
         // Setup BottomNavigationView with the NavController
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -54,36 +61,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDestinationChanged(NavController controller, NavDestination destination, Bundle arguments) {
                 updateNavigationIcon(destination.getId());
-                lastActiveFragment = destination.getId();
             }
         });
 
         // Set click listeners for the icons
         setIconClickListeners();
+
+        // Initialize ViewModel and Repository
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        parkingLotRepository = new ParkingLotRepository();
+
+        // Load data and update ViewModel
+        loadData();
     }
 
-    @SuppressLint("SetTextI18n")
+    private void loadData() {
+        parkingLotRepository.getParkingLots(new Callback<GetParkingLotsResp>() {
+            StatisticsViewModel statisticsViewModel = new ViewModelProvider(MainActivity.this).get(StatisticsViewModel.class);
+
+            @Override
+            public void onResponse(Call<GetParkingLotsResp> call, Response<GetParkingLotsResp> response) {
+                if (response.isSuccessful()) {
+                    // Here you can format the data as needed
+                    homeViewModel.updateText(response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GetParkingLotsResp> call, @NonNull Throwable t) {
+                Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Log.d("MainActivity", "Failed to load data: ", t);
+            }
+        });
+    }
+
+
     private void updateNavigationIcon(int destinationId) {
         if (destinationId == R.id.navigation_home) {
-            titleIconImageView.setImageDrawable(null);
             navigationIconImageView.setImageResource(R.drawable.baseline_settings_24);
-            toolbarTitle.setText("Home Screen");
+            toolbar.setTitle("Home Screen");
         } else if (destinationId == R.id.navigation_map) {
-            titleIconImageView.setImageDrawable(null);
             navigationIconImageView.setImageResource(R.drawable.baseline_settings_24);
-            toolbarTitle.setText("Map");
+            toolbar.setTitle("Map");
         } else if (destinationId == R.id.navigation_statistics) {
-            titleIconImageView.setImageDrawable(null);
             navigationIconImageView.setImageResource(R.drawable.baseline_calendar_24);
-            toolbarTitle.setText("Statistics");
+            toolbar.setTitle("Statistics");
         } else if (destinationId == R.id.navigation_settings) {
-            titleIconImageView.setImageDrawable(null);
             navigationIconImageView.setImageDrawable(null);
-            toolbarTitle.setText("General Settings");
-        } else if (destinationId == R.id.navigation_date_selection){
-            titleIconImageView.setImageResource(R.drawable.baseline_calendar_24);
-            navigationIconImageView.setImageDrawable(null);
-            toolbarTitle.setText("Week Selection");
+            toolbar.setTitle("General Settings");
         }
     }
 
@@ -106,10 +131,11 @@ public class MainActivity extends AppCompatActivity {
                     } else if (destinationId == R.id.navigation_map) {
                         showToast("Map Setting icon clicked!");
                     } else if (destinationId == R.id.navigation_statistics) {
-                        navController.navigate(R.id.navigation_date_selection);
+                        showToast("Statistic icon clicked!");
                     }
                 }
             }
         });
     }
+
 }

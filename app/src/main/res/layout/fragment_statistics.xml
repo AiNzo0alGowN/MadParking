@@ -20,7 +20,7 @@
         </com.github.mikephil.charting.charts.LineChart>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvGarages"
+            android:id="@+id/garages_list"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 

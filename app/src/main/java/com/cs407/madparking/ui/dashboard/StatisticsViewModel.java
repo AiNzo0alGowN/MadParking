@@ -4,16 +4,20 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cs407.madparking.api.data.GarageData;
+
+import java.util.List;
+
 public class StatisticsViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private MutableLiveData<List<GarageData>> parkingSpots = new MutableLiveData<>();
 
-    public StatisticsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is statistics fragment");
+    public LiveData<List<GarageData>> getParkingSpots() {
+        return parkingSpots;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void loadParkingSpots() {
+        // 使用 Retrofit 加载数据
+        // 更新 parkingSpots
     }
 }
