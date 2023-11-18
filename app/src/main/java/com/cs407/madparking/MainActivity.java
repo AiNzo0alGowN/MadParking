@@ -8,10 +8,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs407.madparking.ui.home.HomeFragment;
+import com.cs407.madparking.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -19,12 +21,22 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.cs407.madparking.databinding.ActivityMainBinding;
 
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private NavController navController;
     private ImageView navigationIconImageView;
     private Toolbar toolbar;
+    private HomeViewModel homeViewModel;
+    private ParkingLotRepository parkingLotRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +66,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Set click listeners for the icons
         setIconClickListeners();
+
+        // Initialize ViewModel and Repository
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        parkingLotRepository = new ParkingLotRepository();
+
+        // Load data and update ViewModel
+        loadData();
     }
+
+    private void loadData() {
+        parkingLotRepository.getParkingLots(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful()) {
+                    // Here you can format the data as needed
+                    homeViewModel.updateText(response.body().toString());
+                }
+            }
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void updateNavigationIcon(int destinationId) {
         if (destinationId == R.id.navigation_home) {
@@ -97,4 +133,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
