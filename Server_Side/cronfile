@@ -1,0 +1,1 @@
+*/10 * * * * cd /app && python3 MadisonGarageInfoScraper.py >> /var/log/madison_scraper.log 2>&1 && python3 CampusGarageInfoScraper.py >> /var/log/campus_scraper.log 2>&1

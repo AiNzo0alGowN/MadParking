@@ -1,0 +1,173 @@
+{
+    "Blair Lot": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/blair-lot",
+        "name": "Blair Lot",
+        "availability": "unknown",
+        "addresses": [
+            "410 S. Blair St.\nMadison, WI 53703\n"
+        ],
+        "hours": "Metered Spaces: Park users only. Enforced 6 am – 6 pm, Monday – Friday.\nMonthly Permit Spaces: No parking except by permit 6 am – 6 pm, Monday – Friday.\nPublic Parking 6 pm – 10 pm\nNo Parking 10 pm – 4 am",
+        "locations_nearby": "Lake Monona\nBike Trail\nMonona Terrace\nWilliamson Street",
+        "rates": "Hourly Rate\n$1.00 per hour\nAccepts Visa, MasterCard and nickels, dimes and quarters."
+    },
+    "Buckeye Lot": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/buckeye-lot",
+        "name": "Buckeye Lot",
+        "availability": "unknown",
+        "addresses": [
+            "214 W. Gorham St.\nMadison, WI 53703\n"
+        ],
+        "clearance": "Surface Lot (no ceiling)",
+        "hours": "Open and enforced 24/7, including Sundays and holidays",
+        "locations_nearby": "State Street\nOverture Center\nCapitol Square\nPeace Park",
+        "rates": "Hourly Rate\n$1.80 per hour\nAccepts Visa, MasterCard and nickels, dimes, quarters and dollar coins."
+    },
+    "Capitol Square North Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/capitol-square-north-garage",
+        "name": "Capitol Square North Garage",
+        "availability": "303",
+        "addresses": [
+            "218 E. Mifflin St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "clearance": "7' 2\"",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed.",
+        "locations_nearby": "Madison Children's Museum\nCapitol Square\nJames Madison Park",
+        "rates": "Hourly Rate\n$1.20 per hour\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nVisit Explanation of Rates for details about night and weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times."
+    },
+    "Evergreen Lot": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/evergreen-lot",
+        "name": "Evergreen Lot",
+        "availability": "unknown",
+        "addresses": [
+            "1802 Monroe St., #2\nMadison, WI 53703\n"
+        ],
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nNo sports event parking.",
+        "locations_nearby": "Monroe Street Business\nCamp Randall Stadium",
+        "rates": "Hourly Rate\n$1.30 per hour\n8:00 am – 8:00 pm, Monday – Sunday\nAccepts Visa, MasterCard, and nickels, dimes, quarters and dollar coins."
+    },
+    "Overture Center Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/overture-center-garage",
+        "name": "Overture Center Garage",
+        "availability": "404",
+        "addresses": [
+            "318 W. Mifflin St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "clearance": "6' 8\"",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed.",
+        "locations_nearby": "Overture Center\nState Street\nMadison Museum of Contemporary Art",
+        "rates": "Hourly Rate\n$1.00 per hour\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nView Explanation of Rates for details about night & weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times."
+    },
+    "South Livingston Street Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/south-livingston-street-garage",
+        "name": "South Livingston Street Garage",
+        "availability": "472",
+        "addresses": [
+            "111 S. Livingston St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "clearance": "8'2\"",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed.",
+        "locations_nearby": "Breese Stevens Field\nThe Sylvee music venue",
+        "rates": "Hourly Rate\n$0.80 per hour\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nView Explanation of Rates for details about night and weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times."
+    },
+    "State Street Campus Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/state-street-campus-garage",
+        "name": "State Street Campus Garage",
+        "availability": "437",
+        "addresses": [
+            "430 N. Frances St.\nMadison, WI 53703\n",
+            "415 N. Lake St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "clearance": "6' 9\"",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed.",
+        "locations_nearby": "University of Wisconsin Campus\nState Street\nMemorial Union\nChazen Museum of Art",
+        "rates": "Hourly Rate\n$1.50 per hour\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nView Explanation of Rates for details about night and weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times."
+    },
+    "State Street Capitol Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/state-street-capitol-garage",
+        "name": "State Street Capitol Garage",
+        "availability": "468",
+        "addresses": [
+            "200 N. Carroll St.\nMadison, WI 53703\n"
+        ],
+        "clearance": "6'8\"",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nVehicles parked for more than 48 hours may be ticketed or towed.",
+        "locations_nearby": "Capitol Square\nWisconsin Veterans Museum\nWisconsin Historical Museum",
+        "rates": "Hourly Rate\n$1.20 per hour\nMeters: $1.80 per hour\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nView Explanation of Rates for details about night and weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times.\nWIAA Basketball rate (valid 3/16/2023 – 3/18/2023): $7.00 pay-on-entry"
+    },
+    "Wilson Lot": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/wilson-lot",
+        "name": "Wilson Lot",
+        "availability": "unknown",
+        "addresses": [
+            "499 E. Wilson St.\nMadison, WI 53703\n"
+        ],
+        "clearance": "Surface Lot (no ceiling)",
+        "hours": "Monthly Permit Spaces: No parking except by permit 6 am – 6 pm, Monday – Friday. Public Parking all other times.",
+        "locations_nearby": "Lake Monona\nBike Trail\nMonona Terrace\nWilliamson Street"
+    },
+    "Wilson Street Garage": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/wilson-street-garage",
+        "name": "Wilson Street Garage",
+        "availability": "477",
+        "addresses": [
+            "20 E. Wilson St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "clearance": "8' 2\" at entrance, 6'8\" for levels LL-LL4",
+        "hours": "Open and enforced 24/7, including Sundays and holidays.\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed.",
+        "locations_nearby": "City County Building\nMonona Terrace\nCapitol Square",
+        "rates": "Hourly Rate\n$1.80 per hour\nWeekday maximum (5:00 am – 6:00 pm): $14.00\nAccepts Visa, MasterCard and cash.\nNights & Weekends\n$8.00 maximum\nView Explanation of Rates for details about night and weekend rates.\nSpecial Events\n$8.00 pay-on-entry\nAccepts Visa, MasterCard, cash and pre-paid coupon. Check Special Events Calendar for upcoming locations and times."
+    },
+    "Wingra Lot": {
+        "url": "https://www.cityofmadison.com/parking/garages-lots/wingra-lot",
+        "name": "Wingra Lot",
+        "availability": "unknown",
+        "addresses": [
+            "800 Garfield St.\nMadison, WI 53703\n"
+        ],
+        "ev_charging": "Charging Stations Available",
+        "hours": "Public parking is available 24/7.\nEnforced 8:00 am – 6:00 pm, Monday – Saturday. Sundays and holidays are not enforced.",
+        "locations_nearby": "Monroe Street Business\nCamp Randall Stadium",
+        "rates": "Hourly Rate\n$1.20 per hour\n8:00 am – 6:00 pm, Monday – Saturday. Accepts nickels, dimes and quarters."
+    },
+    "LOT 17": {
+        "availability": "184"
+    },
+    "LOT 20": {
+        "availability": "62"
+    },
+    "LOT 29": {
+        "availability": "15"
+    },
+    "LOT 6": {
+        "availability": "62"
+    },
+    "LOT 7": {
+        "availability": "41"
+    },
+    "LOT 9577": {
+        "availability": "0"
+    },
+    "LOT 80": {
+        "availability": "38"
+    },
+    "LOT 76": {
+        "availability": "130"
+    },
+    "LOT 36": {
+        "availability": "88"
+    },
+    "LOT 46": {
+        "availability": "0"
+    },
+    "LOT 27": {
+        "availability": "13"
+    },
+    "LOT 67": {
+        "availability": "142"
+    }
+}
