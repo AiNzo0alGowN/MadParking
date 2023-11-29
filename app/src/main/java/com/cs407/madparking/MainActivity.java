@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cs407.madparking.ui.home.HomeFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.cs407.madparking.ui.map.MapSetting;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -58,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateNavigationIcon(int destinationId) {
         if (destinationId == R.id.navigation_home) {
+            navController.popBackStack(R.id.navigation_home, false);
             navigationIconImageView.setImageResource(R.drawable.baseline_settings_24);
             toolbar.setTitle("Home Screen");
         } else if (destinationId == R.id.navigation_map) {
@@ -88,8 +87,12 @@ public class MainActivity extends AppCompatActivity {
                     // Define different actions based on the current destination
                     if (destinationId == R.id.navigation_home) {
                         showToast("Home Setting icon clicked!");
+
                     } else if (destinationId == R.id.navigation_map) {
-                        showToast("Map Setting icon clicked!");
+
+                            navController.navigate(R.id.navigation_map_setting);
+                            toolbar.setTitle("Map Setting");
+
                     } else if (destinationId == R.id.navigation_statistics) {
                         showToast("Statistic icon clicked!");
                     }
