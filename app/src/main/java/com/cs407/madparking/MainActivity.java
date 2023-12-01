@@ -2,6 +2,7 @@ package com.cs407.madparking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,9 +82,13 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if (response.isSuccessful()) {
                     // Here you can format the data as needed
-                    homeViewModel.updateText(response.body().toString());
+//                    homeViewModel.updateText(response.body().toString());
+
+                    Map<String, Object> parkingLotsData = response.body();
+//                    Log.d("MainActivity", "Parking Lots Data: " + parkingLotsData.get("Blair Lot"));
                 }
             }
+
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
