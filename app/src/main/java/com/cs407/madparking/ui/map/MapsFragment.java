@@ -16,9 +16,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,12 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.cs407.madparking.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -64,11 +72,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Map<Integer, Marker> markerMap = new HashMap<>();
 
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    addUserPositionMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+                }
+            }
+        };
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -242,8 +265,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         String[] addressParts = fullAddress.split("\n");
                         String streetAddress = addressParts[0];
 
-                        if (lotName.length() > 28) {
-                            lotName = lotName.substring(0, 28);
+                        if (lotName.length() > 35) {
+                            lotName = lotName.substring(0, 35);
                             // Optionally, trim to the last complete word
                             int lastSpaceIndex = lotName.lastIndexOf(' ');
                             //Log.d("Debug", "lastSpaceIndex"+lastSpaceIndex);
@@ -316,40 +339,69 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         boolean isPositionEnabled = sharedPreferences.getBoolean("PositionEnabled", false);
         mMap.setTrafficEnabled(isTrafficEnabled);
 
-        if (isPositionEnabled) {
-            enableUserLocation();
-        }
+        readApi();
         LatLng madison = new LatLng(43.0745614, -89.407373);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(madison, 14));
 
-        readApi();
+        isPositionEnabled= true;
+        if (isPositionEnabled) {
+            enableUserLocation();
+        }
     }
+
+    private void startLocationUpdates() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000); // 10 seconds
+        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Initialize or update your locationCallback here if needed
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    addUserPositionMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+                }
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+
 
     private void enableUserLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request it
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            // Permission already granted
-            mMap.setMyLocationEnabled(true);
-            addUserPositionMarker();
+            startLocationUpdates();
         }
     }
 
-    private void addUserPositionMarker() {
-        if (mMap != null) {
-            LatLng mapCenter = mMap.getCameraPosition().target;
+
+    private void addUserPositionMarker(LatLng userLocation) {
+        if (mMap != null && userLocation != null) {
             if (userPositionMarker != null) userPositionMarker.remove(); // Remove existing marker if present
             userPositionMarker = mMap.addMarker(new MarkerOptions()
-                    .position(mapCenter)
-                    .draggable(true)
-                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))); // Customizing the marker
+                    .position(userLocation)
+                    .draggable(true) // Set to false if you don't want the marker to be draggable
                     .icon(bitmapDescriptorFromVector(getContext(), R.drawable.baseline_beenhere_24))); // Custom icon
         }
     }
+
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -368,4 +420,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+
 }
