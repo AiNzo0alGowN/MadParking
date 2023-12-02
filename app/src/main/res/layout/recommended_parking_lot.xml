@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:src="@drawable/baseline_electrical_services_24"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
     <!-- Garage Name TextView -->
@@ -54,9 +54,8 @@
         android:layout_toEndOf="@id/parking_lot_icon"
         android:text="Hours of Operation:"
         android:textAppearance="?attr/textAppearanceBody2"
-        android:textSize="18dp"
+        android:textSize="14dp"
         android:textStyle="bold" />
-
 
     <TextView
         android:id="@+id/operation_hours_text_view"
@@ -83,5 +82,12 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/availability_text_view"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray" />
 
 </RelativeLayout>
