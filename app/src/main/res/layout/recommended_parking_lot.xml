@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- Icon ImageView -->
+    <ImageView
+        android:id="@+id/parking_lot_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/baseline_local_parking_24" />
+
+    <ImageView
+        android:id="@+id/electric_charging_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/baseline_electrical_services_24"
+        android:visibility="gone" />
+
+
+    <!-- Garage Name TextView -->
+    <TextView
+        android:id="@+id/garage_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/parking_lot_icon"
+        android:text="State Street Campus Garage"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textSize="14dp" />
+
+    <!-- Garage Address TextView -->
+    <TextView
+        android:id="@+id/garage_address_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/garage_name_text_view"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/parking_lot_icon"
+        android:text="430 N. Frances St."
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="14dp" />
+
+    <!-- Operation Hours TextView -->
+    <TextView
+        android:id="@+id/operation_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/garage_address_text_view"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/parking_lot_icon"
+        android:text="Hours of Operation:"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/operation_hours_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/operation_hours"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/parking_lot_icon"
+        android:text="Open and Enforced 24/7\nSundays and Holidays Included\nOvernight parking is allowed. Vehicles parked over 48 hours may be ticketed and/or towed."
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="14dp" />
+
+    <!-- Availability TextView -->
+    <TextView
+        android:id="@+id/availability_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/operation_hours_text_view"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:text="Current Availability: 511"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/availability_text_view"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray" />
+
+</RelativeLayout>
