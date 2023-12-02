@@ -3,6 +3,7 @@ package com.cs407.madparking.ui.map;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class ParkingListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_parking, parent, false);
         }
@@ -44,6 +46,7 @@ public class ParkingListAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 if (position < latLngList.size()) {
                     LatLng selectedLocation = latLngList.get(position);
+                    Log.d("Debug", "LatLng"+selectedLocation);
                     startNavigation(getContext(), selectedLocation);
                 }
             }

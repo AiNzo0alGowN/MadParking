@@ -4,10 +4,18 @@ import static android.content.Context.MODE_PRIVATE;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +33,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -37,8 +48,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
@@ -46,6 +59,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private ListView listViewParking;
     private ArrayList<String> parkingLotList;
     private List<LatLng> listLatLng;
+
+    private Marker userPositionMarker;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private Map<Integer, Marker> markerMap = new HashMap<>();
 
     @Nullable
     @Override
@@ -58,6 +75,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     //used to add the marker from the given address
     private class GeocodeAsyncTask extends AsyncTask<String, Void, LatLng> {
         private GoogleMap taskMap;
+        private FetchAddressAsyncTask.ParkingLotInfo parkingLotInfo;
+
+        public GeocodeAsyncTask(GoogleMap map, FetchAddressAsyncTask.ParkingLotInfo parkingLotInfo) {
+            this.taskMap = map;
+            this.parkingLotInfo = parkingLotInfo;
+        }
 
         public GeocodeAsyncTask(GoogleMap map) {
             this.taskMap = map;
@@ -66,7 +89,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         protected LatLng doInBackground(String... addresses) {
             try {
                 String address = addresses[0];
-                String apiKey = "AIzaSyCzcC0Gh80sKlmbJgeIV9YkqkMRsWV4uPM"; // Replace with your actual API key
+                String apiKey = "AIzaSyCzcC0Gh80sKlmbJgeIV9YkqkMRsWV4uPM";
                 String requestUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
                         Uri.encode(address) + "&key=" + apiKey;
 
@@ -100,9 +123,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         @Override
         protected void onPostExecute(LatLng latLng) {
             if (latLng != null) {
+                // Add marker with lot name and availability
                 listLatLng.add(latLng);
-                ArrayAdapter<String> adapter = (ArrayAdapter<String>) listViewParking.getAdapter();
-                adapter.notifyDataSetChanged();
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(parkingLotInfo.name)
+                        .snippet("Availability: " + parkingLotInfo.availability));
+                // Assuming parkingLotInfo has a unique identifier, like an index or ID
+                markerMap.put(parkingLotInfo.id, marker);
             }
         }
     }
@@ -118,8 +146,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         listLatLng = new ArrayList<>();
 
-        ParkingListAdapter adapter = new ParkingListAdapter(getActivity(), parkingLotList, listLatLng);
-        listViewParking.setAdapter(adapter);
+
 
 
         // Set up a click listener for the ListView items
@@ -131,6 +158,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     LatLng selectedLocation = listLatLng.get(position);
                     addMarkerOnMap(selectedLocation);
 
+                }
+                Marker marker = markerMap.get(position);
+                if (marker != null) {
+                    marker.showInfoWindow();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 }
             }
         });
@@ -144,7 +176,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private void addMarkerOnMap(LatLng location) {
         if (mMap != null) {
-            mMap.addMarker(new MarkerOptions().position(location).title("Selected Location"));
+            //mMap.addMarker(new MarkerOptions().position(location).title("Selected Location"));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
         }
     }
@@ -154,11 +186,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    private class FetchAddressAsyncTask extends AsyncTask<Void, Void, List<String>> {
-        private List<String> streetAddresses = new ArrayList<>();
+    private class FetchAddressAsyncTask extends AsyncTask<Void, Void, List<FetchAddressAsyncTask.ParkingLotInfo>> {
+        class ParkingLotInfo {
+            String name;
+            String address;
+            String availability;
+            LatLng latLng;
+            int id;
+
+            public ParkingLotInfo(String name, String address, String availability) {
+                this.name = name;
+                this.address = address;
+                this.availability = availability;
+            }
+        }
 
         @Override
-        protected List<String> doInBackground(Void... voids) {
+        protected List<ParkingLotInfo> doInBackground(Void... voids) {
+            List<ParkingLotInfo> parkingLots = new ArrayList<>();
             List<String> parkingDetails = new ArrayList<>();
             HttpURLConnection connection = null;
             BufferedReader reader = null;
@@ -195,9 +240,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     if (addressArray.length() > 0) {
                         String fullAddress = addressArray.getString(0);
                         String[] addressParts = fullAddress.split("\n");
-                        String streetAddress = addressParts[0]; // Extract only the street address
+                        String streetAddress = addressParts[0];
 
-                        streetAddresses.add(streetAddress);
+                        if (lotName.length() > 28) {
+                            lotName = lotName.substring(0, 28);
+                            // Optionally, trim to the last complete word
+                            int lastSpaceIndex = lotName.lastIndexOf(' ');
+                            //Log.d("Debug", "lastSpaceIndex"+lastSpaceIndex);
+                            if (lastSpaceIndex > 0) {
+                                lotName = lotName.substring(0, lastSpaceIndex);
+                            }
+                        }
+
+                        parkingLots.add(new ParkingLotInfo(lotName, streetAddress, availability));
 
                         String parkingInfo = lotName + "\n" + streetAddress + "\nCurrent Availability: " + availability;
                         parkingDetails.add(parkingInfo);
@@ -219,22 +274,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     }
                 }
             }
-            return parkingDetails;
+            return parkingLots;
         }
 
         @Override
-        protected void onPostExecute(List<String> parkingDetails) {
-            if (parkingDetails != null && !parkingDetails.isEmpty()) {
-                parkingLotList.clear();
-                parkingLotList.addAll(parkingDetails);
-                ArrayAdapter<String> adapter = (ArrayAdapter<String>) listViewParking.getAdapter();
-                adapter.notifyDataSetChanged();
+        protected void onPostExecute(List<ParkingLotInfo> parkingLots) {
+            if (parkingLots != null && !parkingLots.isEmpty()) {
+                int id = 0;
+                // Update the UI, for example, update a list view with parking lot details
+                for (ParkingLotInfo lot : parkingLots) {
+                    lot.id = id++;
+                    String parkingDetails = lot.name + "\n" + lot.address + "\nCurrent Availability: " + lot.availability;
+                    parkingLotList.add(parkingDetails);
+                    new GeocodeAsyncTask(mMap, lot).execute(lot.address);
+                }
+                if (parkingLotList != null && !parkingLotList.isEmpty()) {
+                    ParkingListAdapter adapter = new ParkingListAdapter(getActivity(), parkingLotList, listLatLng);
+                    listViewParking.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("Debug", "parkingLotList is null or empty");
+                }
             } else {
                 Log.e("FetchAddressAsyncTask", "No parking details found");
-            }
-
-            for (String address : streetAddresses) {
-                new GeocodeAsyncTask(mMap).execute(address);
             }
         }
     }
@@ -251,15 +313,59 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppSettings", MODE_PRIVATE);
         boolean isTrafficEnabled = sharedPreferences.getBoolean("TrafficEnabled", false);
+        boolean isPositionEnabled = sharedPreferences.getBoolean("PositionEnabled", false);
         mMap.setTrafficEnabled(isTrafficEnabled);
 
+        if (isPositionEnabled) {
+            enableUserLocation();
+        }
         LatLng madison = new LatLng(43.0745614, -89.407373);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(madison, 14));
 
-
-
         readApi();
+    }
 
-        
+    private void enableUserLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission already granted
+            mMap.setMyLocationEnabled(true);
+            addUserPositionMarker();
+        }
+    }
+
+    private void addUserPositionMarker() {
+        if (mMap != null) {
+            LatLng mapCenter = mMap.getCameraPosition().target;
+            if (userPositionMarker != null) userPositionMarker.remove(); // Remove existing marker if present
+            userPositionMarker = mMap.addMarker(new MarkerOptions()
+                    .position(mapCenter)
+                    .draggable(true)
+                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))); // Customizing the marker
+                    .icon(bitmapDescriptorFromVector(getContext(), R.drawable.baseline_beenhere_24))); // Custom icon
+        }
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                enableUserLocation();
+            }
+        }
     }
 }

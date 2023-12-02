@@ -20,10 +20,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MapSetting extends Fragment {
 
-    private Switch switchTraffic;
+    private Switch switchTraffic, switchPosition;
 
     public MapSetting() {
-        // Required empty public constructor
+
     }
 
     public static MapSetting newInstance() {
@@ -48,13 +48,16 @@ public class MapSetting extends Fragment {
 
         // Initialize the switch
         switchTraffic = view.findViewById(R.id.switchTraffic);
+        switchPosition = view.findViewById(R.id.switchPosition);
 
         // Load saved preferences
         SharedPreferences mapSetting = getActivity().getSharedPreferences("AppSettings", MODE_PRIVATE);
         boolean isTrafficEnabled = mapSetting.getBoolean("TrafficEnabled", false);
+        boolean isPositionEnabled = mapSetting.getBoolean("PositionEnabled", false);
         switchTraffic.setChecked(isTrafficEnabled);
+        switchPosition.setChecked(isPositionEnabled);
 
-        // Set up a listener for the switch
+        // Set up listeners for the switchs
         switchTraffic.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Save the switch state in shared preferences
             SharedPreferences.Editor editor = mapSetting.edit();
@@ -63,6 +66,13 @@ public class MapSetting extends Fragment {
 
             // Provide feedback to the user
             Toast.makeText(getContext(), "Traffic setting updated", Toast.LENGTH_SHORT).show();
+        });
+
+        switchPosition.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = mapSetting.edit();
+            editor.putBoolean("PositionEnabled", isChecked); // Save the new setting
+            editor.apply();
+            Toast.makeText(getContext(), "Position setting updated", Toast.LENGTH_SHORT).show();
         });
 
         // Set up a listener for the confirm button

@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
     <LinearLayout
         android:id="@+id/donation_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,6 @@
             android:layout_weight="1"
             android:text="Donation"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -31,7 +30,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donation_box">
@@ -48,7 +46,29 @@
             android:id="@+id/switchTraffic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ev_support_box">
+
+        <TextView
+            android:id="@+id/text_enable_accurate_position"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Enable Accurate Position"
+            android:textStyle="bold" />
+
+        <Switch
+            android:id="@+id/switchPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <Button
@@ -57,9 +77,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Confirm"
-        app:layout_constraintTop_toBottomOf="@+id/ev_support_box"
+        app:layout_constraintTop_toBottomOf="@+id/box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
