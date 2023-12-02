@@ -35,17 +35,56 @@ def scrape_parking_lot_info(url):
         public_parking_checkbox.click()
     sleep(2)  # Wait for the parking information to load
 
-    # Scrape and update parking data
+ # Scrape and update parking data
     parking_lots_info = {}
     available_parking_elements = driver.find_elements(By.CSS_SELECTOR, '.available_parking')
     for element in available_parking_elements:
-        lot_name = element.find_element(By.CSS_SELECTOR, '.lot_number').text.strip()
-        spot_count_elements = element.find_elements(By.CSS_SELECTOR, '.spot-count')
-        if spot_count_elements:
-            spot_count = spot_count_elements[0].text.strip()
-            parking_lots_info[lot_name] = {'availability': spot_count}
+        # element.click() 
+        # Click each parking lot to view its details
+        driver.execute_script("arguments[0].click();", element)
+        sleep(1)  # Wait for details to load
+
+        # Fetch additional information from the popup
+        popup = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, '.parking-lot-popup'))
+        )
+        lot_name = popup.find_element(By.TAG_NAME, 'h3').text.split('\n')[0]  # First <p> tag contains address
+        
+        try:
+            address = popup.find_element(By.TAG_NAME, 'p').text.split('\n')[0]  # First <p> tag contains address
+        except Exception as e:
+            address = "unknown"
+        
+        try: 
+            availability = popup.find_element(By.CSS_SELECTOR, '.parking-available').text.strip()
+        except Exception as e:
+            availability = "unknown"
+
+        try:
+            lot_hours = popup.find_element(By.CLASS_NAME, 'lot-hours').text.strip()
+        except Exception as e:
+            lot_hours = "unknown"
+
+        # Combine all information
+        parking_lots_info[lot_name] = {
+            'addresses': [address],
+            'availability': availability,
+            'hours': lot_hours
+        }
 
     return parking_lots_info
+
+    # # Scrape and update parking data
+    # parking_lots_info = {}
+    # available_parking_elements = driver.find_elements(By.CSS_SELECTOR, '.available_parking')
+    # for element in available_parking_elements:
+    #     lot_name = element.find_element(By.CSS_SELECTOR, '.lot_number').text.strip()
+    #     spot_count_elements = element.find_elements(By.CSS_SELECTOR, '.spot-count')
+    #     if spot_count_elements:
+    #         spot_count = spot_count_elements[0].text.strip()
+    #         parking_lots_info[lot_name] = {'availability': spot_count}
+
+    # return parking_lots_info
 
 # URL of the parking map
 url = "https://map.wisc.edu/"
