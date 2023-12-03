@@ -52,6 +52,7 @@ def scrape_parking_lot_info(url):
         
         try:
             address = popup.find_element(By.TAG_NAME, 'p').text.split('\n')[0]  # First <p> tag contains address
+            address += "\nMadison, WI"
         except Exception as e:
             address = "unknown"
         
