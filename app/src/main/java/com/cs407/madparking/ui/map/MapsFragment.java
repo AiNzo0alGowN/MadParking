@@ -274,11 +274,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 lotName = lotName.substring(0, lastSpaceIndex);
                             }
                         }
+                        Log.d("Debug", "Lotname "+ lotName + " address "+ streetAddress);
 
-                        parkingLots.add(new ParkingLotInfo(lotName, streetAddress, availability));
+                        parkingLots.add(new ParkingLotInfo(lotName, fullAddress, availability));
 
                         String parkingInfo = lotName + "\n" + streetAddress + "\nCurrent Availability: " + availability;
-                        parkingDetails.add(parkingInfo);
+                        parkingLotList.add(parkingInfo);
                     }
                 }
 
@@ -307,8 +308,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 // Update the UI, for example, update a list view with parking lot details
                 for (ParkingLotInfo lot : parkingLots) {
                     lot.id = id++;
-                    String parkingDetails = lot.name + "\n" + lot.address + "\nCurrent Availability: " + lot.availability;
-                    parkingLotList.add(parkingDetails);
+//                    String parkingDetails = lot.name + "\n" + lot.address + "\nCurrent Availability: " + lot.availability;
+//                    parkingLotList.add(parkingDetails);
                     new GeocodeAsyncTask(mMap, lot).execute(lot.address);
                 }
                 if (parkingLotList != null && !parkingLotList.isEmpty()) {
