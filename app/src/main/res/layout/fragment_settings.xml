@@ -112,23 +112,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dark_mode_box">
 
-
         <TextView
             android:id="@+id/text_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Recommonded Address"
-            android:textSize="18dp"
+            android:text="Recommended Address"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-        <Button
+        <TextView
             android:id="@+id/button_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:hint="Enter address"
-            android:textSize="18dp" />
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Enter address"
+            android:textAlignment="viewEnd"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -137,5 +139,38 @@
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/address_box" />
+
+    <LinearLayout
+        android:id="@+id/range_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/address_box">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Garage within"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/distance_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/range_box" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

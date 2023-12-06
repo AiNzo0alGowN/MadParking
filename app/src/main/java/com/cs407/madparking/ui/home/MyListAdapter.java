@@ -1,5 +1,6 @@
 package com.cs407.madparking.ui.home;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cs407.madparking.R;
+import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -39,7 +47,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         String operation = parkingLotDetails.get("hours").toString();
         String availability = parkingLotDetails.get("availability").toString();
 
-        Log.d("T", parkingLotDetails.toString());
+//        Log.d("T", parkingLotDetails.toString());
         holder.name.setText(parkingLotName + ":");
         holder.address.setText(address);
         holder.operation.setText(operation);
@@ -70,4 +78,5 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             evIcon = itemView.findViewById(R.id.electric_charging_icon);
         }
     }
+
 }
