@@ -4,5 +4,6 @@
         <item>100 meters</item>
         <item>200 meters</item>
         <item>500 meters</item>
+        <item>Any</item>
     </string-array>
 </resources>

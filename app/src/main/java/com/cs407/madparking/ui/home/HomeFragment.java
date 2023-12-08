@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -69,7 +71,6 @@ public class HomeFragment extends Fragment {
         parkingLotRepository = new ParkingLotRepository();
 
         loadData();
-
         return root;
     }
 
@@ -83,30 +84,35 @@ public class HomeFragment extends Fragment {
                         Map<String, Object> parkingLotsData = response.body();
                         int totalRequests = parkingLotsData.size();
                         int[] completedRequests = {0};
-                        Integer range = loadDistanceOption();
-                        Log.d("HF", range.toString());
+                        int range = loadDistanceOption();
+                        boolean ev_support = getEvSupportStatus();
+
                         // Use a temporary list or map to store filtered data
                         Map<String, Object> filteredParkingLots = new HashMap<>();
 
                         for (Map.Entry<String, Object> entry : parkingLotsData.entrySet()) {
                             String key = entry.getKey();
                             Map<?, ?> parkingLotDetails = (Map<?, ?>) entry.getValue();
-                            String address = parkingLotDetails.get("addresses").toString().replace("[", "").replace("]", "");
-
-                            getLatLng(address, latLng -> {
+                            if (parkingLotDetails.get("ev_charging") != null || !ev_support) {
+                                Log.d("HF", parkingLotDetails.get("addresses").toString());
+                                String address = parkingLotDetails.get("addresses").toString().replace("[", "").replace("]", "");
+                                getLatLng(address, latLng -> {
+                                    completedRequests[0]++;
+                                    if (latLng != null && SphericalUtil.computeDistanceBetween(latLng, storedAddress) <= range) {
+                                        filteredParkingLots.put(key, parkingLotDetails);
+                                    }
+                                    // Check if all requests are completed
+                                    if (completedRequests[0] == totalRequests) {
+                                        // Update adapter on the main thread
+                                        handler.post(() -> {
+                                            adapter = new MyListAdapter(filteredParkingLots);
+                                            recyclerView.setAdapter(adapter);
+                                        });
+                                    }
+                                });
+                            } else {
                                 completedRequests[0]++;
-                                if (latLng != null && SphericalUtil.computeDistanceBetween(latLng, storedAddress) <= range) {
-                                    filteredParkingLots.put(key, parkingLotDetails);
-                                }
-                                // Check if all requests are completed
-                                if (completedRequests[0] == totalRequests) {
-                                    // Update adapter on the main thread
-                                    handler.post(() -> {
-                                        adapter = new MyListAdapter(filteredParkingLots);
-                                        recyclerView.setAdapter(adapter);
-                                    });
-                                }
-                            });
+                            }
                         }
                     }
                 }
@@ -122,14 +128,18 @@ public class HomeFragment extends Fragment {
     }
 
     private LatLng getStoredAddress() {
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        float lat = sharedPreferences.getFloat("latitude", 0);
-        float lng = sharedPreferences.getFloat("longitude", 0);
+        SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        float lat = sharedPreferences.getFloat("latitude", (float) 43.0849639);
+        float lng = sharedPreferences.getFloat("longitude", (float) -89.4889926);
+
+        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode_status", false);
+        int mode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(mode);
         return new LatLng(lat, lng);
     }
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     private void getLatLng(String address, Consumer<LatLng> callback) {
         executorService.execute(() -> {
@@ -170,18 +180,25 @@ public class HomeFragment extends Fragment {
     }
 
     private int loadDistanceOption() {
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        int selectedPosition = sharedPreferences.getInt("selected_distance_option", 0);
-        if (selectedPosition == 0){
+        SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        int selectedPosition = sharedPreferences.getInt("selected_distance_option", 3);
+        if (selectedPosition == 0) {
             return 100;
         } else if (selectedPosition == 1) {
             return 200;
         } else if (selectedPosition == 2) {
             return 500;
-        } else{
-            return 500;
+        } else {
+            return 9999999;
         }
     }
+
+    private boolean getEvSupportStatus() {
+        SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        boolean isEvSupport = sharedPreferences.getBoolean("ev_support_status", false);
+        return isEvSupport;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

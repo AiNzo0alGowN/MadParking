@@ -1,6 +1,5 @@
 package com.cs407.madparking;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.cs407.madparking.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -22,11 +22,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.cs407.madparking.databinding.ActivityMainBinding;
 
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -71,29 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize ViewModel and Repository
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         parkingLotRepository = new ParkingLotRepository();
-
-        // Load data and update ViewModel
-        loadData();
-    }
-
-    private void loadData() {
-        parkingLotRepository.getParkingLots(new Callback<Map<String, Object>>() {
-            @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                if (response.isSuccessful()) {
-                    // Here you can format the data as needed
-//                    homeViewModel.updateText(response.body().toString());
-
-                    Map<String, Object> parkingLotsData = response.body();
-//                    Log.d("MainActivity", "Parking Lots Data: " + parkingLotsData.get("Blair Lot"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
@@ -128,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     int destinationId = currentDestination.getId();
                     // Define different actions based on the current destination
                     if (destinationId == R.id.navigation_home) {
-                        showToast("Home Setting icon clicked!");
+                        navController.navigate(R.id.navigation_home_setting);
+                        toolbar.setTitle("Home Screen Setting");
                     } else if (destinationId == R.id.navigation_map) {
                         navController.navigate(R.id.navigation_map_setting);
                         toolbar.setTitle("Map Setting");

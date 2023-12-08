@@ -32,4 +32,9 @@
         android:id="@+id/navigation_map_setting"
         android:name="com.cs407.madparking.ui.map.MapSetting"
         tools:layout="@layout/mapping_setting" />
+
+    <fragment
+        android:id="@+id/navigation_home_setting"
+        android:name="com.cs407.madparking.ui.home.HomeSetting"
+        tools:layout="@layout/home_setting" />
 </navigation>
