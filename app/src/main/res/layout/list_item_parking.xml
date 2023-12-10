@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160px"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textViewParkingInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/buttonGoHere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="Go Here"
+        android:textColor="@color/badger_red" />
+
+</LinearLayout>

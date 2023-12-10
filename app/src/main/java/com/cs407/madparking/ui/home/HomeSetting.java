@@ -1,4 +1,4 @@
-package com.cs407.madparking.ui.settings;
+package com.cs407.madparking.ui.home;
 
 import static android.app.appsearch.AppSearchResult.RESULT_OK;
 
@@ -12,19 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.cs407.madparking.R;
-import com.cs407.madparking.databinding.FragmentSettingsBinding;
+import com.cs407.madparking.databinding.HomeSettingBinding;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -32,12 +32,19 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 import java.util.Arrays;
 
-public class SettingsFragment extends Fragment {
-
-    private FragmentSettingsBinding binding;
+public class HomeSetting extends Fragment {
+    private HomeSettingBinding binding;
     private SharedPreferences sharedPreferences;
     private Spinner distanceSpinner;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
+
+    public HomeSetting() {
+
+    }
+
+    public static HomeSetting newInstance() {
+        return new HomeSetting();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,23 +57,13 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        SettingsViewModel settingsViewModel =
+                new ViewModelProvider(this).get(SettingsViewModel.class);
+
+        binding = HomeSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-
-        // Set up the dark mode switch
-        Switch switchDarkMode = binding.switchDarkMode;
-        boolean isDarkModeEnabled = sharedPreferences.getBoolean("dark_mode_status", false);
-        switchDarkMode.setChecked(isDarkModeEnabled);
-
-        int mode = isDarkModeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(mode);
-
-        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveDarkModeStatus(isChecked);
-        });
-
         // Load saved address and set click listener
         String savedAddress = sharedPreferences.getString("saved_address", "Madison");
         binding.buttonAddress.setText(savedAddress.isEmpty() ? "Enter address" : savedAddress);
@@ -74,7 +71,6 @@ public class SettingsFragment extends Fragment {
 
         // Range Setting
         distanceSpinner = binding.distanceSpinner;
-        loadDistanceOption();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.distance_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -84,27 +80,23 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 saveDistanceOption(position);
-                loadDistanceOption();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                loadDistanceOption();
             }
         });
 
-        Switch switchEvSupport = binding.switchEvSupport;
-        boolean isEvSupportEnabled = sharedPreferences.getBoolean("ev_support_status", false); // Default is false
-        switchEvSupport.setChecked(isEvSupportEnabled);
-
-        switchEvSupport.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveEvSupportStatus(isChecked);
-        });
+        loadDistanceOption();
         return root;
     }
 
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Button confirmButton = view.findViewById(R.id.Confirm_button);
+        confirmButton.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+    }
+
     private void launchAutocompleteActivity() {
-        Log.d("SF",Place.Field.NAME.toString());
         Intent intent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN, Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
                 .build(requireContext());
@@ -146,19 +138,6 @@ public class SettingsFragment extends Fragment {
         distanceSpinner.setSelection(selectedPosition);
     }
 
-    private void saveEvSupportStatus(boolean status) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("ev_support_status", status);
-        editor.apply();
-    }
-
-    private void saveDarkModeStatus(boolean status) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("dark_mode_status", status);
-        editor.apply();
-        int mode = status ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(mode);
-    }
 
     @Override
     public void onDestroyView() {

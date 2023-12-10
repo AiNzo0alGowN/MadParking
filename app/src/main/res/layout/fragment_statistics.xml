@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/statics_swipe_refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.dashboard.StatisticsFragment">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        tools:context=".ui.statistics.StatisticsFragment">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBaseline_toBottomOf="@id/toolbar">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </com.github.mikephil.charting.charts.LineChart>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:layout_constraintBaseline_toBottomOf="@id/toolbar">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/garages_list"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            </com.github.mikephil.charting.charts.BarChart>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/parked_status_container"
-            android:name="com.cs407.madparking.ui.dashboard.statis.OnParkedFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/garages_list"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20sp" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/parked_status_container"
+                android:name="com.cs407.madparking.ui.statistics.internal.NeedParkedFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

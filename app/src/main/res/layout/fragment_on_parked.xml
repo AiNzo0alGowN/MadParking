@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.dashboard.statis.OnParkedFragment">
+    tools:context=".ui.statistics.internal.OnParkedFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -36,7 +36,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
                     android:text="@string/state_street_campus_garage"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -78,11 +77,18 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/park_price"
+        android:id="@+id/tv_price"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/parked_default_price"
         android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tv_start_time"
+        android:layout_width="match_parent"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
 
 </LinearLayout>

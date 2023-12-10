@@ -6,6 +6,10 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/navigation_date_selection"
+        android:name="com.cs407.madparking.ui.statistics.internal.DateTimeFragment"
+        tools:layout="@layout/fragment_date_time" />
+    <fragment
         android:id="@+id/navigation_home"
         android:name="com.cs407.madparking.ui.home.HomeFragment"
         android:label="@string/title_home"
@@ -19,7 +23,7 @@
 
     <fragment
         android:id="@+id/navigation_statistics"
-        android:name="com.cs407.madparking.ui.dashboard.StatisticsFragment"
+        android:name="com.cs407.madparking.ui.statistics.StatisticsFragment"
         android:label="@string/title_statistics"
         tools:layout="@layout/fragment_statistics" />
 
@@ -28,10 +32,13 @@
         android:name="com.cs407.madparking.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/navigation_map_setting"
+        android:name="com.cs407.madparking.ui.map.MapSetting"
+        tools:layout="@layout/mapping_setting" />
 
     <fragment
-        android:id="@+id/navigation_date_selection"
-        android:name="com.cs407.madparking.ui.dashboard.statis.DateTimeFragment"
-        tools:layout="@layout/fragment_date_time" />
-
+        android:id="@+id/navigation_home_setting"
+        android:name="com.cs407.madparking.ui.home.HomeSetting"
+        tools:layout="@layout/home_setting" />
 </navigation>
