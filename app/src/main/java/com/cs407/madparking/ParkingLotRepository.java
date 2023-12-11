@@ -2,6 +2,8 @@ package com.cs407.madparking;
 
 import android.util.Log;
 
+import com.cs407.madparking.api.GarageData;
+
 import java.util.Map;
 
 import retrofit2.Call;
@@ -17,6 +19,11 @@ public class ParkingLotRepository {
 
     public void getParkingLots(Callback<Map<String, Object>> callback) {
         Call<Map<String, Object>> call = parkingLotApi.getParkingLots();
+        call.enqueue(callback);
+    }
+
+    public void getParkingLotsAdv(Callback<Map<String, GarageData>> callback) {
+        Call<Map<String, GarageData>> call = parkingLotApi.getParkingLotsAdv();
         call.enqueue(callback);
     }
 }

@@ -10,4 +10,5 @@
     <color name="night_1">#2B2727</color>
     <color name="night_2">#4C4848</color>
     <color name="bottomBar">#FFFFFFFF</color>
+    <color name="green">#00FF00</color>
 </resources>
