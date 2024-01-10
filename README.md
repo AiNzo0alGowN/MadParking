@@ -23,17 +23,17 @@ https://drive.google.com/file/d/18ak8V_x7-aodFxiwU9HcSvBh14_PaY2q/view?usp=drive
 - **Testing Devices:** Various Android devices.
 
 ## Contributing
-Xiyu Cui: Backend
-Jinghu Ding: Map Activity
-Shixiong He: Statistics Activity
-Don Ma: Homescreen Activity & Main Settings Activity
+- **Xiyu Cui:** Backend
+- **Jinghu Ding:** Map Activity
+- **Shixiong He:** Statistics Activity
+- **Don Ma:** Homescreen Activity & Main Settings Activity
 
 
 ## Contact
-Xiyu Cui: xcui58@wisc.edu
-Jinghu Ding: jding83@wisc.edu
-Shixiong He: she244@wisc.edu
-Don Ma: dyma2@wisc.edu 
+- **Xiyu Cui:** xcui58@wisc.edu
+- **Jinghu Ding:** jding83@wisc.edu
+- **Shixiong He:** she244@wisc.edu
+- **Don Ma:** dyma2@wisc.edu 
 
 ## License
 MIT License
