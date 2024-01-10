@@ -1,4 +1,4 @@
-# MadParking Project
+# MadParking
 
 ## Overview
 **MadParking** is a mobile application designed to simplify finding parking in urban areas. It provides real-time information on parking availability, traffic conditions, and personalized recommendations for parking.
